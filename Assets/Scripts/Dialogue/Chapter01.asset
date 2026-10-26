@@ -14,8 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - id: room_001
+    nextNodeID: room_002
     speaker: ???
     text: Where am I?
+    choices: []
+    editorPosition: {x: 136, y: -260}
+  - id: room_002
+    nextNodeID: room_003
+    speaker: ???
+    text: No one responded.
+    choices: []
+    editorPosition: {x: 136, y: -260}
+  - id: room_003
+    nextNodeID: 
+    speaker: ???
+    text: I don't like this big room.
     choices:
     - text: Investigate the room
       targetNodeID: room_02
@@ -23,42 +36,86 @@ MonoBehaviour:
       - type: 0
         key: Found_Cube
         value: 0
-      conditions: []
+        boolValue: 0
+      conditions:
+      - type: 0
+        key: tried
+        value: 0
+      - type: 3
+        key: Found_Cube
+        value: 0
     - text: Try to leave
       targetNodeID: room_03
-      effects: []
-      conditions: []
+      effects:
+      - type: 0
+        key: tried
+        value: 0
+        boolValue: 0
+      conditions:
+      - type: 3
+        key: tried
+        value: 0
     - text: Use the cube
       targetNodeID: room_04
       effects:
       - type: 0
         key: 
         value: 0
+        boolValue: 0
       conditions:
       - type: 0
         key: Found_Cube
         value: 0
     editorPosition: {x: 0, y: 0}
   - id: room_02
+    nextNodeID: room_02.1
+    speaker: ???
+    text: There is a landing on the stairs.
+    choices: []
+    editorPosition: {x: 136, y: -260}
+  - id: room_02.1
+    nextNodeID: 
     speaker: ???
     text: You found a cube
     choices:
-    - text: Ok
-      targetNodeID: room_001
+    - text: This looks very useful.
+      targetNodeID: room_003
       effects: []
       conditions: []
     editorPosition: {x: 340, y: 0}
   - id: room_03
+    nextNodeID: room_03.1
     speaker: ???
-    text: No way out
+    text: "I certainly don\u2019t want to jump into this pool."
+    choices: []
+    editorPosition: {x: 136, y: -260}
+  - id: room_03.1
+    nextNodeID: 
+    speaker: ???
+    text: Since I cannot move forward...
     choices:
-    - text: ok
-      targetNodeID: room_001
+    - text: Look behind
+      targetNodeID: room_003
       effects: []
       conditions: []
     editorPosition: {x: 680, y: 0}
   - id: room_04
+    nextNodeID: 
     speaker: ???
     text: 3D turned into 2D.
+    choices:
+    - text: what happened?!
+      targetNodeID: room_05
+      effects:
+      - type: 2
+        key: 
+        value: 0
+        boolValue: 1
+      conditions: []
+    editorPosition: {x: 136, y: -260}
+  - id: room_05
+    nextNodeID: 
+    speaker: ???
+    text: Looks like playing Mario wasn't a waste of time.
     choices: []
-    editorPosition: {x: 0, y: 240}
+    editorPosition: {x: 136, y: -260}

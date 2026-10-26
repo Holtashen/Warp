@@ -5,6 +5,56 @@ public class DialogueManager : MonoBehaviour
 {
     public DialogueData dialogueData;
     public DialogueUI dialogueUI;
+    private int availableChoiceCount = 0;
+
+    //public void AdvanceDialogue()
+    //{
+    //    if (currentNode == null)
+    //    {
+    //        return;
+    //    }
+
+    //    // 有分支时，不允许点击面板跳过选择
+    //    if (currentNode.choices != null &&
+    //        currentNode.choices.Count > 0)
+    //    {
+    //        return;
+    //    }
+
+    //    // 没有下一节点，结束推进
+    //    if (string.IsNullOrEmpty(currentNode.nextNodeID))
+    //    {
+    //        Debug.Log("当前对话已经结束：" + currentNode.id);
+    //        return;
+    //    }
+
+    //    StartDialogue(currentNode.nextNodeID);
+    //}
+
+
+    public void AdvanceDialogue()
+    {
+        if (currentNode == null)
+        {
+            return;
+        }
+
+        // 存在有效选项时，必须由玩家选择
+        if (availableChoiceCount > 0)
+        {
+            return;
+        }
+
+        // 没有可用选项时，按普通对话的下一节点推进
+        if (string.IsNullOrEmpty(currentNode.nextNodeID))
+        {
+            Debug.Log("当前对话已经结束：" + currentNode.id);
+            return;
+        }
+
+        StartDialogue(currentNode.nextNodeID);
+    }
+
 
     private Dictionary<string, DialogueNode> nodeDictionary;
 
@@ -54,8 +104,11 @@ public class DialogueManager : MonoBehaviour
     //        currentNode.text
     //    );
     //}
+
+
     void ShowCurrentNode()
     {
+        availableChoiceCount = 0;
         dialogueUI.ShowDialogue(
             currentNode.speaker,
             currentNode.text
@@ -63,25 +116,15 @@ public class DialogueManager : MonoBehaviour
 
         ClearChoices();
 
-        if (currentNode.choices != null &&
-            currentNode.choices.Count > 0)
+       // int availableChoiceCount = 0;
+
+        if (currentNode.choices != null)
         {
-            //foreach (DialogueChoice choice in currentNode.choices)
-            //{
-            //    ChoiceUI choiceUI =
-            //        Instantiate(choicePrefab, choiceContainer);
-
-            //    choiceUI.Setup(
-            //        choice.text,
-            //        choice.targetNodeID,
-            //        this
-            //    );
-            //}
-
             foreach (DialogueChoice choice in currentNode.choices)
             {
                 if (!CheckConditions(choice))
                 {
+                    
                     continue;
                 }
 
@@ -93,11 +136,65 @@ public class DialogueManager : MonoBehaviour
                     choice.targetNodeID,
                     this
                 );
-            }
 
+                availableChoiceCount++;
+            }
+        }
+
+        if (availableChoiceCount > 0)
+        {
             dialogueUI.ShowChoices();
         }
+        else
+        {
+            dialogueUI.HideChoices();
+        }
     }
+
+    //void ShowCurrentNode()
+    //{
+    //    dialogueUI.ShowDialogue(
+    //        currentNode.speaker,
+    //        currentNode.text
+    //    );
+
+    //    ClearChoices();
+
+    //    if (currentNode.choices != null &&
+    //        currentNode.choices.Count > 0)
+    //    {
+    //        //foreach (DialogueChoice choice in currentNode.choices)
+    //        //{
+    //        //    ChoiceUI choiceUI =
+    //        //        Instantiate(choicePrefab, choiceContainer);
+
+    //        //    choiceUI.Setup(
+    //        //        choice.text,
+    //        //        choice.targetNodeID,
+    //        //        this
+    //        //    );
+    //        //}
+
+    //        foreach (DialogueChoice choice in currentNode.choices)
+    //        {
+    //            if (!CheckConditions(choice))
+    //            {
+    //                continue;
+    //            }
+
+    //            ChoiceUI choiceUI =
+    //                Instantiate(choicePrefab, choiceContainer);
+
+    //            choiceUI.Setup(
+    //                choice.text,
+    //                choice.targetNodeID,
+    //                this
+    //            );
+    //        }
+
+    //        dialogueUI.ShowChoices();
+    //    }
+    //}
 
     void ClearChoices()
     {
@@ -121,6 +218,15 @@ public class DialogueManager : MonoBehaviour
                 case ConditionType.HasFlag:
 
                     if (!GameState.Instance.HasFlag(condition.key))
+                    {
+                        return false;
+                    }
+
+                    break;
+
+                case ConditionType.NotHasFlag:
+
+                    if (GameState.Instance.HasFlag(condition.key))
                     {
                         return false;
                     }
@@ -206,6 +312,22 @@ public class DialogueManager : MonoBehaviour
                         effect.key,
                         effect.value
                     );
+
+                    break;
+
+                case EffectType.SetDimension2D:
+
+                    DimensionSwitcher switcher =
+                        FindObjectOfType<DimensionSwitcher>();
+
+                    if (switcher != null)
+                    {
+                        switcher.SetDimension(effect.boolValue);
+                    }
+                    else
+                    {
+                        Debug.LogError("找不到 DimensionSwitcher！");
+                    }
 
                     break;
             }

@@ -38,9 +38,12 @@ public class DialogueNode
 {
     public string id;
 
+    [Tooltip("普通对话结束后进入的节点 ID；有分支时优先使用分支")]
+    public string nextNodeID;
+
     public string speaker;
 
-    [TextArea(3, 8)]
+    [TextArea(6, 15)]
     public string text;
 
     public List<DialogueChoice> choices;

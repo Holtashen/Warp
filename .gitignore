@@ -12,6 +12,7 @@
 .vs/
 .idea/
 .vscode/
+.gradle/
 *.csproj
 *.sln
 *.suo

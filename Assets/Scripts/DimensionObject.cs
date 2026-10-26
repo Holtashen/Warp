@@ -9,16 +9,25 @@ public class DimensionObject : MonoBehaviour
     public Collider collider_2D;
     public Collider collider_3D;
 
-    private void SwitchTo2D()
+   
+    public void SwitchTo2D()
     {
-        collider_2D.enabled = true;
-        collider_3D.enabled = false;
+        if (collider_2D != null)
+            collider_2D.enabled = true;
+
+        if (collider_3D != null)
+            collider_3D.enabled = false;
+
     }
 
-    private void SwitchTo3D()
+    public void SwitchTo3D()
     {
-        collider_2D.enabled = false;
-        collider_3D.enabled = true;
+        if (collider_2D != null)
+            collider_2D.enabled = false;
+
+        if (collider_3D != null)
+            collider_3D.enabled = true;
+
     }
 
     void OnCollisionEnter(Collision collision)

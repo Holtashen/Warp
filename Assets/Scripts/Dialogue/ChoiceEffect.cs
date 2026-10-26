@@ -9,10 +9,13 @@ public class ChoiceEffect
     public string key;
 
     public int value;
+
+    public bool boolValue;
 }
 
 public enum EffectType
 {
     SetFlag,
-    AddInt
+    AddInt,
+    SetDimension2D
 }

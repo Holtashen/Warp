@@ -15,5 +15,6 @@ public enum ConditionType
 {
     HasFlag,
     IntGreaterOrEqual,
-    IntLessOrEqual
+    IntLessOrEqual,
+    NotHasFlag
 }
