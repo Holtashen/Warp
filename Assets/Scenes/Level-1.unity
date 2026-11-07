@@ -218731,7 +218731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: 43d1e72fb859ebe438086f4e8821772e, type: 2}
-  initialLanguage: 0
+  initialLanguage: 1
 --- !u!4 &1020521748
 Transform:
   m_ObjectHideFlags: 0

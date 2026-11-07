@@ -59,9 +59,13 @@ public class DialogueNodeView : Node
         );
     }
 
-    // 创建节点内部文字编辑区域
+    // ==============================
+    // 节点内部编辑区域
+    // ==============================
+
     private void CreateNodeFields()
     {
+        // Speaker
         TextField speakerField = new TextField("Speaker")
         {
             value = dialogueNode.speaker ?? "",
@@ -76,6 +80,26 @@ public class DialogueNodeView : Node
             });
         });
 
+        extensionContainer.Add(speakerField);
+
+        // Speaker Localization Key
+        TextField speakerKeyField = new TextField("Speaker Key")
+        {
+            value = dialogueNode.speakerKey ?? "",
+            isDelayed = true
+        };
+
+        speakerKeyField.RegisterValueChangedCallback(evt =>
+        {
+            onNodeEdited?.Invoke(() =>
+            {
+                dialogueNode.speakerKey = evt.newValue;
+            });
+        });
+
+        extensionContainer.Add(speakerKeyField);
+
+        // Dialogue
         TextField dialogueField = new TextField("Dialogue")
         {
             value = dialogueNode.text ?? "",
@@ -93,14 +117,143 @@ public class DialogueNodeView : Node
             });
         });
 
-        extensionContainer.Add(speakerField);
         extensionContainer.Add(dialogueField);
+
+        // Dialogue Localization Key
+        TextField dialogueKeyField = new TextField("Dialogue Key")
+        {
+            value = dialogueNode.textKey ?? "",
+            isDelayed = true
+        };
+
+        dialogueKeyField.RegisterValueChangedCallback(evt =>
+        {
+            onNodeEdited?.Invoke(() =>
+            {
+                dialogueNode.textKey = evt.newValue;
+            });
+        });
+
+        extensionContainer.Add(dialogueKeyField);
+
+        // Choice 编辑区域
+        CreateChoiceFields();
 
         RefreshExpandedState();
         RefreshPorts();
     }
 
+    // ==============================
+    // Choice 文本和 Key 编辑
+    // ==============================
+
+    private void CreateChoiceFields()
+    {
+        if (dialogueNode.choices == null ||
+            dialogueNode.choices.Count == 0)
+        {
+            return;
+        }
+
+        Foldout choicesFoldout = new Foldout
+        {
+            text = "Choices",
+            value = false
+        };
+
+        foreach (DialogueChoice choice in dialogueNode.choices)
+        {
+            if (choice == null)
+            {
+                continue;
+            }
+
+            Foldout choiceFoldout = new Foldout
+            {
+                text = choice.id,
+                value = false
+            };
+
+            // Choice ID
+            Label choiceIDLabel = new Label(
+                "Choice ID: " + choice.id
+            );
+
+            choiceFoldout.Add(choiceIDLabel);
+
+            // Choice Text
+            TextField choiceTextField = new TextField("Text")
+            {
+                value = choice.text ?? "",
+                isDelayed = true
+            };
+
+            choiceTextField.RegisterValueChangedCallback(evt =>
+            {
+                onNodeEdited?.Invoke(() =>
+                {
+                    choice.text = evt.newValue;
+
+                    choiceFoldout.text =
+                        string.IsNullOrEmpty(choice.text)
+                            ? choice.id
+                            : choice.text;
+
+                    UpdateChoicePortLabel(choice);
+                });
+            });
+
+            choiceFoldout.Add(choiceTextField);
+
+            // Choice Localization Key
+            TextField choiceKeyField = new TextField("Text Key")
+            {
+                value = choice.textKey ?? "",
+                isDelayed = true
+            };
+
+            choiceKeyField.RegisterValueChangedCallback(evt =>
+            {
+                onNodeEdited?.Invoke(() =>
+                {
+                    choice.textKey = evt.newValue;
+                });
+            });
+
+            choiceFoldout.Add(choiceKeyField);
+
+            choicesFoldout.Add(choiceFoldout);
+        }
+
+        extensionContainer.Add(choicesFoldout);
+    }
+
+    // 修改 Choice 文本时同步更新输出端口名称
+    private void UpdateChoicePortLabel(DialogueChoice choice)
+    {
+        if (choice == null ||
+            string.IsNullOrEmpty(choice.id))
+        {
+            return;
+        }
+
+        if (ChoiceOutputPorts.TryGetValue(
+            choice.id,
+            out Port outputPort))
+        {
+            outputPort.portName =
+                string.IsNullOrEmpty(choice.text)
+                    ? choice.id
+                    : choice.text;
+
+            RefreshPorts();
+        }
+    }
+
+    // ==============================
     // 输入端口
+    // ==============================
+
     private void CreateInputPort()
     {
         InputPort = InstantiatePort(
@@ -115,7 +268,10 @@ public class DialogueNodeView : Node
         inputContainer.Add(InputPort);
     }
 
-    // 创建两种输出端口
+    // ==============================
+    // 创建输出端口
+    // ==============================
+
     private void CreateOutputPorts()
     {
         // 普通自动跳转
