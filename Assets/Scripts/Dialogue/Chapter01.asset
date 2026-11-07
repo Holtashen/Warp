@@ -16,11 +16,11 @@ MonoBehaviour:
   - id: room_001
     nextNodeID: room_002
     speaker: ???
-    speakerKey: 
+    speakerKey: chapter01.room001.speaker
     text: Where am I?
-    textKey: 
+    textKey: chapter01.room001.text
     choices: []
-    editorPosition: {x: -1487, y: -283}
+    editorPosition: {x: -1826, y: -283}
   - id: room_002
     nextNodeID: room_003
     speaker: ???
@@ -32,13 +32,13 @@ MonoBehaviour:
   - id: room_003
     nextNodeID: 
     speaker: ???
-    speakerKey: sgsgd
+    speakerKey: 
     text: I don't like this big room.
     textKey: 
     choices:
     - id: choice_001
       text: Investigate the room
-      textKey: 
+      textKey: chapter01.room001.choice001
       targetNodeID: room_02
       effects:
       - type: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
         key: Found_Cube
         value: 0
     - id: choice_002
-      text: Try to leave !
+      text: 'Try to leave '
       textKey: 
       targetNodeID: room_03
       effects:
@@ -78,7 +78,7 @@ MonoBehaviour:
       - type: 0
         key: Found_Cube
         value: 0
-    editorPosition: {x: -762, y: -283}
+    editorPosition: {x: -763, y: -287}
   - id: room_02
     nextNodeID: room_02.1
     speaker: ???

@@ -37,11 +37,15 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueNode currentNode;
 
+    private bool isListeningLocalization;
+
     public ChoiceUI choicePrefab;
     public Transform choiceContainer;
 
     void Start()
     {
+        SubscribeToLocalization();
+
         BuildDictionary();
 
         StartDialogue("room_001");
@@ -88,13 +92,28 @@ public class DialogueManager : MonoBehaviour
     {
         availableChoiceCount = 0;
 
-        dialogueUI.ShowDialogue(
-            currentNode.speaker,
+        // 获取说话者名称
+        string speakerText = GetLocalizedText(
+            currentNode.speakerKey,
+            currentNode.speaker
+        );
+
+        // 获取对话内容
+        string dialogueText = GetLocalizedText(
+            currentNode.textKey,
             currentNode.text
         );
 
+        // 显示对话
+        dialogueUI.ShowDialogue(
+            speakerText,
+            dialogueText
+        );
+
+        // 清除旧的 Choice UI
         ClearChoices();
 
+        // 创建当前节点的 Choice
         if (currentNode.choices != null)
         {
             foreach (DialogueChoice choice in currentNode.choices)
@@ -106,8 +125,9 @@ public class DialogueManager : MonoBehaviour
 
                 if (string.IsNullOrEmpty(choice.id))
                 {
-                    Debug.LogError(
-                        "Choice has no ID in Node: " + currentNode.id
+                    Debug.LogWarning(
+                        "发现没有 ID 的 Choice，跳过。Node: "
+                        + currentNode.id
                     );
 
                     continue;
@@ -118,11 +138,20 @@ public class DialogueManager : MonoBehaviour
                     continue;
                 }
 
-                ChoiceUI choiceUI =
-                    Instantiate(choicePrefab, choiceContainer);
+                // 根据当前语言获取 Choice 文本
+                string choiceText = GetLocalizedText(
+                    choice.textKey,
+                    choice.text
+                );
 
+                ChoiceUI choiceUI = Instantiate(
+                    choicePrefab,
+                    choiceContainer
+                );
+
+                // 这里仍然传入 choice.id，而不是 targetNodeID
                 choiceUI.Setup(
-                    choice.text,
+                    choiceText,
                     choice.id,
                     this
                 );
@@ -392,6 +421,83 @@ public class DialogueManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+
+    private void OnEnable()
+    {
+        SubscribeToLocalization();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromLocalization();
+    }
+
+    private void SubscribeToLocalization()
+    {
+        if (isListeningLocalization)
+        {
+            return;
+        }
+
+        if (LocalizationManager.Instance == null)
+        {
+            return;
+        }
+
+        LocalizationManager.Instance.LanguageChanged +=
+            HandleLanguageChanged;
+
+        isListeningLocalization = true;
+    }
+
+    private void UnsubscribeFromLocalization()
+    {
+        if (!isListeningLocalization)
+        {
+            return;
+        }
+
+        if (LocalizationManager.Instance != null)
+        {
+            LocalizationManager.Instance.LanguageChanged -=
+                HandleLanguageChanged;
+        }
+
+        isListeningLocalization = false;
+    }
+
+    private void HandleLanguageChanged(GameLanguage language)
+    {
+        if (currentNode == null)
+        {
+            return;
+        }
+
+        ShowCurrentNode();
+    }
+
+    private string GetLocalizedText(string key, string fallbackText)
+    {
+        // 没有设置 Key，使用原始文本
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return fallbackText ?? "";
+        }
+
+        // LocalizationManager 不存在时，使用原始文本
+        if (LocalizationManager.Instance == null)
+        {
+            Debug.LogWarning(
+                "LocalizationManager 不存在，使用原始文本：" + key
+            );
+
+            return fallbackText ?? "";
+        }
+
+        // 根据当前语言取得翻译
+        return LocalizationManager.Instance.GetText(key);
     }
 
 }
