@@ -25,3 +25,87 @@ MonoBehaviour:
     chinese: "\u7EE7\u7EED\u8C03\u67E5"
     japanese: "\u8ABF\u67FB\u3092\u7D9A\u3051\u308B"
     english: Continue investigating
+  - key: chapter01.room_002.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_002.text
+    chinese: 
+    japanese: 
+    english: No one responded.
+  - key: chapter01.room_003.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_003.text
+    chinese: 
+    japanese: 
+    english: I don't like this big room.
+  - key: chapter01.room_003.choice_002
+    chinese: 
+    japanese: 
+    english: 'Try to leave '
+  - key: chapter01.room_003.choice_003
+    chinese: 
+    japanese: 
+    english: Use the cube
+  - key: chapter01.room_02.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_02.text
+    chinese: 
+    japanese: 
+    english: There is a landing on the stairs.
+  - key: chapter01.room_02_1.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_02_1.text
+    chinese: 
+    japanese: 
+    english: You found a cube
+  - key: chapter01.room_02_1.choice_001
+    chinese: 
+    japanese: 
+    english: This looks very useful.
+  - key: chapter01.room_03.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_03.text
+    chinese: 
+    japanese: 
+    english: "I certainly don\u2019t want to jump into this pool."
+  - key: chapter01.room_03_1.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_03_1.text
+    chinese: 
+    japanese: 
+    english: Since I cannot move forward...
+  - key: chapter01.room_03_1.choice_001
+    chinese: 
+    japanese: 
+    english: Look behind
+  - key: chapter01.room_04.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_04.text
+    chinese: 
+    japanese: 
+    english: 3D turned into 2D.
+  - key: chapter01.room_04.choice_001
+    chinese: 
+    japanese: 
+    english: what happened?!
+  - key: chapter01.room_05.speaker
+    chinese: 
+    japanese: 
+    english: ???
+  - key: chapter01.room_05.text
+    chinese: 
+    japanese: 
+    english: Looks like playing Mario wasn't a waste of time.
