@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de02ee2d17f550c4484189c1cc6c4ded, type: 3}
+  m_Name: MainLocalizationDatabase
+  m_EditorClassIdentifier: 
+  entries:
+  - key: chapter01.room001.text
+    chinese: "\u4F60\u9192\u4E86\u3002"
+    japanese: "\u76EE\u304C\u899A\u3081\u305F\u3002"
+    english: You wake up.
+  - key: chapter01.room001.speaker
+    chinese: ???
+    japanese: ???
+    english: ???
+  - key: chapter01.room001.choice001
+    chinese: "\u7EE7\u7EED\u8C03\u67E5"
+    japanese: "\u8ABF\u67FB\u3092\u7D9A\u3051\u308B"
+    english: Continue investigating
