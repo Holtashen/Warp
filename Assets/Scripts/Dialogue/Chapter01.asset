@@ -30,7 +30,8 @@ MonoBehaviour:
     speaker: ???
     text: I don't like this big room.
     choices:
-    - text: Investigate the room
+    - id: choice_001
+      text: Investigate the room
       targetNodeID: room_02
       effects:
       - type: 0
@@ -44,7 +45,8 @@ MonoBehaviour:
       - type: 3
         key: Found_Cube
         value: 0
-    - text: Try to leave
+    - id: choice_002
+      text: Try to leave
       targetNodeID: room_03
       effects:
       - type: 0
@@ -55,7 +57,8 @@ MonoBehaviour:
       - type: 3
         key: tried
         value: 0
-    - text: Use the cube
+    - id: choice_003
+      text: Use the cube
       targetNodeID: room_04
       effects:
       - type: 0
@@ -78,7 +81,8 @@ MonoBehaviour:
     speaker: ???
     text: You found a cube
     choices:
-    - text: This looks very useful.
+    - id: choice_001
+      text: This looks very useful.
       targetNodeID: room_003
       effects: []
       conditions: []
@@ -94,7 +98,8 @@ MonoBehaviour:
     speaker: ???
     text: Since I cannot move forward...
     choices:
-    - text: Look behind
+    - id: choice_001
+      text: Look behind
       targetNodeID: room_003
       effects: []
       conditions: []
@@ -104,7 +109,8 @@ MonoBehaviour:
     speaker: ???
     text: 3D turned into 2D.
     choices:
-    - text: what happened?!
+    - id: choice_001
+      text: what happened?!
       targetNodeID: room_05
       effects:
       - type: 2

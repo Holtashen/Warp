@@ -50,6 +50,8 @@ public class DialogueGraphWindow : EditorWindow
     {
         if (graphView != null)
         {
+            graphView.Dispose();
+
             rootVisualElement.Remove(graphView);
         }
     }

@@ -11,6 +11,9 @@ using UnityEngine;
 [Serializable]
 public class DialogueChoice
 {
+
+    public string id;
+
     public string text;
 
     public string targetNodeID;

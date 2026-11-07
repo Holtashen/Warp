@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0011b27ba68e74c91f953d629ac064, type: 3}
+  m_Name: Chapter01_EditorTest
+  m_EditorClassIdentifier: 
+  nodes:
+  - id: node_001
+    nextNodeID: 
+    speaker: 
+    text: 
+    choices:
+    - id: choice_001
+      text: 
+      targetNodeID: node_002
+      effects: []
+      conditions: []
+    - id: choice_002
+      text: 
+      targetNodeID: node_002
+      effects: []
+      conditions: []
+    editorPosition: {x: -834, y: -994}
+  - id: node_002
+    nextNodeID: 
+    speaker: 
+    text: 
+    choices: []
+    editorPosition: {x: -523, y: -955}
+  - id: node_003
+    nextNodeID: 
+    speaker: 
+    text: 
+    choices: []
+    editorPosition: {x: -246, y: -892}
