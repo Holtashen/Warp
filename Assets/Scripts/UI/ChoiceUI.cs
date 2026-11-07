@@ -1,35 +1,3 @@
-//using TMPro;
-//using UnityEngine;
-//using UnityEngine.UI;
-
-//public class ChoiceUI : MonoBehaviour
-//{
-//    public TMP_Text text;
-//    public Button button;
-
-//    private string targetNodeID;
-//    private DialogueManager dialogueManager;
-
-//    public void Setup(
-//        string choiceText,
-//        string targetID,
-//        DialogueManager manager)
-//    {
-//        text.text = choiceText;
-
-//        targetNodeID = targetID;
-//        dialogueManager = manager;
-
-//        button.onClick.RemoveAllListeners();
-
-//        button.onClick.AddListener(OnClick);
-//    }
-
-//    void OnClick()
-//    {
-//        dialogueManager.SelectChoice(targetNodeID);
-//    }
-//}
 
 using TMPro;
 using UnityEngine;
@@ -52,17 +20,17 @@ public class ChoiceUI : MonoBehaviour,
         1f, 0.82f, 0.42f, 1f
     );
 
-    private string targetNodeID;
+    private string choiceID;
     private DialogueManager dialogueManager;
 
     public void Setup(
         string choiceText,
-        string targetID,
+        string id,
         DialogueManager manager)
     {
         text.text = choiceText;
 
-        targetNodeID = targetID;
+        choiceID = id;
         dialogueManager = manager;
 
         text.color = normalColor;
@@ -83,7 +51,13 @@ public class ChoiceUI : MonoBehaviour,
 
     private void OnClick()
     {
-        dialogueManager.SelectChoice(targetNodeID);
+        if (dialogueManager == null ||
+            string.IsNullOrEmpty(choiceID))
+        {
+            Debug.LogError("ChoiceUI: Invalid choice reference.");
+            return;
+        }
+
+        dialogueManager.SelectChoice(choiceID);
     }
 }
-

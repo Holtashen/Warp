@@ -13,31 +13,26 @@ MonoBehaviour:
   m_Name: Chapter01_EditorTest
   m_EditorClassIdentifier: 
   nodes:
-  - id: node_001
-    nextNodeID: 
-    speaker: 
-    text: 
+  - id: room_001
+    nextNodeID: node_002
+    speaker: '?'
+    text: 1
     choices:
     - id: choice_001
       text: 
-      targetNodeID: node_002
+      targetNodeID: 
       effects: []
       conditions: []
-    - id: choice_002
-      text: 
-      targetNodeID: node_002
-      effects: []
-      conditions: []
-    editorPosition: {x: -834, y: -994}
+    editorPosition: {x: -829, y: -1140}
   - id: node_002
-    nextNodeID: 
-    speaker: 
-    text: 
+    nextNodeID: node_003
+    speaker: '?'
+    text: 2!
     choices: []
-    editorPosition: {x: -523, y: -955}
+    editorPosition: {x: -657, y: -1140}
   - id: node_003
     nextNodeID: 
-    speaker: 
-    text: 
+    speaker: '?'
+    text: 3!
     choices: []
-    editorPosition: {x: -246, y: -892}
+    editorPosition: {x: -462, y: -1140}

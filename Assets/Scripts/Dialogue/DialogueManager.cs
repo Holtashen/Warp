@@ -7,29 +7,6 @@ public class DialogueManager : MonoBehaviour
     public DialogueUI dialogueUI;
     private int availableChoiceCount = 0;
 
-    //public void AdvanceDialogue()
-    //{
-    //    if (currentNode == null)
-    //    {
-    //        return;
-    //    }
-
-    //    // 有分支时，不允许点击面板跳过选择
-    //    if (currentNode.choices != null &&
-    //        currentNode.choices.Count > 0)
-    //    {
-    //        return;
-    //    }
-
-    //    // 没有下一节点，结束推进
-    //    if (string.IsNullOrEmpty(currentNode.nextNodeID))
-    //    {
-    //        Debug.Log("当前对话已经结束：" + currentNode.id);
-    //        return;
-    //    }
-
-    //    StartDialogue(currentNode.nextNodeID);
-    //}
 
 
     public void AdvanceDialogue()
@@ -106,9 +83,11 @@ public class DialogueManager : MonoBehaviour
     //}
 
 
+
     void ShowCurrentNode()
     {
         availableChoiceCount = 0;
+
         dialogueUI.ShowDialogue(
             currentNode.speaker,
             currentNode.text
@@ -116,15 +95,26 @@ public class DialogueManager : MonoBehaviour
 
         ClearChoices();
 
-       // int availableChoiceCount = 0;
-
         if (currentNode.choices != null)
         {
             foreach (DialogueChoice choice in currentNode.choices)
             {
+                if (choice == null)
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(choice.id))
+                {
+                    Debug.LogError(
+                        "Choice has no ID in Node: " + currentNode.id
+                    );
+
+                    continue;
+                }
+
                 if (!CheckConditions(choice))
                 {
-                    
                     continue;
                 }
 
@@ -133,7 +123,7 @@ public class DialogueManager : MonoBehaviour
 
                 choiceUI.Setup(
                     choice.text,
-                    choice.targetNodeID,
+                    choice.id,
                     this
                 );
 
@@ -150,6 +140,7 @@ public class DialogueManager : MonoBehaviour
             dialogueUI.HideChoices();
         }
     }
+
 
     //void ShowCurrentNode()
     //{
@@ -263,29 +254,98 @@ public class DialogueManager : MonoBehaviour
     //    StartDialogue(targetNodeID);
     //}
 
-    public void SelectChoice(string targetNodeID)
+
+    public void SelectChoice(string choiceID)
     {
+        if (currentNode == null)
+        {
+            Debug.LogError(
+                "Cannot select Choice: currentNode is null."
+            );
+
+            return;
+        }
+
+        if (string.IsNullOrEmpty(choiceID))
+        {
+            Debug.LogError("Choice ID is empty.");
+            return;
+        }
+
         DialogueChoice selectedChoice = null;
 
+        // 根据独立 Choice ID 查找选项
         foreach (DialogueChoice choice in currentNode.choices)
         {
-            if (choice.targetNodeID == targetNodeID)
+            if (choice == null)
             {
+                continue;
+            }
+
+            if (choice.id == choiceID)
+            {
+                if (selectedChoice != null)
+                {
+                    Debug.LogError(
+                        "Duplicate Choice ID: " + choiceID
+                    );
+
+                    return;
+                }
+
                 selectedChoice = choice;
-                break;
             }
         }
 
         if (selectedChoice == null)
         {
-            Debug.LogError("找不到对应的 Choice: " + targetNodeID);
+            Debug.LogError(
+                "Cannot find Choice ID: " + choiceID
+            );
+
             return;
         }
 
+        // 再次检查条件，防止过期选项被执行
+        if (!CheckConditions(selectedChoice))
+        {
+            Debug.LogWarning(
+                "Choice conditions are no longer satisfied: "
+                + choiceID
+            );
+
+            ShowCurrentNode();
+            return;
+        }
+
+        // 检查目标节点
+        string targetNodeID = selectedChoice.targetNodeID;
+
+        if (string.IsNullOrEmpty(targetNodeID))
+        {
+            Debug.LogError(
+                "Choice has no target Node: " + choiceID
+            );
+
+            return;
+        }
+
+        if (!nodeDictionary.ContainsKey(targetNodeID))
+        {
+            Debug.LogError(
+                "Target Node does not exist: " + targetNodeID
+            );
+
+            return;
+        }
+
+        // 执行当前选项的 Effect
         ApplyEffects(selectedChoice);
 
+        // 进入目标节点
         StartDialogue(targetNodeID);
     }
+
 
     private void ApplyEffects(DialogueChoice choice)
     {
