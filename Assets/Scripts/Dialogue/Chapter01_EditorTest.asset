@@ -13,50 +13,17 @@ MonoBehaviour:
   m_Name: Chapter01_EditorTest
   m_EditorClassIdentifier: 
   nodes:
-  - id: room_001
-    nextNodeID: Node_B
-    speaker: '?'
+  - id: node_001
+    nextNodeID: 
+    speaker: 
     speakerKey: 
-    text: 1
+    text: 
     textKey: 
     choices:
-    - id: Choice_1
-      text: Continue
-      textKey: 
-      targetNodeID: Node_B
-      effects:
-      - type: 0
-        key: Door_Opened
-        value: 1
-        boolValue: 0
-      conditions: []
-    - id: Choice_2
+    - id: choice_001
       text: 
       textKey: 
-      targetNodeID: Node_C
-      effects:
-      - type: 0
-        key: Door_Opened
-        value: 0
-        boolValue: 0
-      conditions:
-      - type: 0
-        key: Has_Key
-        value: 0
-    editorPosition: {x: -913, y: -1140}
-  - id: Node_B
-    nextNodeID: node_003
-    speaker: Old Speaker
-    speakerKey: 
-    text: This is an old dialogue.
-    textKey: 
-    choices: []
-    editorPosition: {x: -657, y: -1140}
-  - id: Node_C
-    nextNodeID: 
-    speaker: '?'
-    speakerKey: 
-    text: 3!
-    textKey: 
-    choices: []
-    editorPosition: {x: -657, y: -848}
+      targetNodeID: 
+      effects: []
+      conditions: []
+    editorPosition: {x: -809.60004, y: -1173.0001}
