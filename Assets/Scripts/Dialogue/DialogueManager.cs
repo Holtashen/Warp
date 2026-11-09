@@ -5,6 +5,21 @@ public class DialogueManager : MonoBehaviour
 {
     public DialogueData dialogueData;
     public DialogueUI dialogueUI;
+
+    [Header("Dialogue History")]
+    [SerializeField]
+    private DialogueHistoryManager historyManager;
+
+    [SerializeField]
+    private string playerChoiceSpeaker = "You";
+
+    [SerializeField]
+    private string playerChoiceSpeakerKey;
+
+    [Header("Startup")]
+    [SerializeField] private bool startDialogueOnStart = true;
+    [SerializeField] private string initialNodeID = "room_001";
+
     private int availableChoiceCount = 0;
 
 
@@ -25,7 +40,7 @@ public class DialogueManager : MonoBehaviour
         // 没有可用选项时，按普通对话的下一节点推进
         if (string.IsNullOrEmpty(currentNode.nextNodeID))
         {
-            Debug.Log("当前对话已经结束：" + currentNode.id);
+            EndDialogue();
             return;
         }
 
@@ -48,7 +63,10 @@ public class DialogueManager : MonoBehaviour
 
         BuildDictionary();
 
-        StartDialogue("room_001");
+        if (startDialogueOnStart)
+        {
+            StartDialogue(initialNodeID);
+        }
     }
 
     void BuildDictionary()
@@ -67,15 +85,53 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(string nodeID)
-    {
-        if (!nodeDictionary.TryGetValue(nodeID, out currentNode))
-        {
-            Debug.LogError("找不到 Node: " + nodeID);
-            return;
-        }
+    //public void StartDialogue(string nodeID)
+    //{
+    //    if (!nodeDictionary.TryGetValue(nodeID, out currentNode))
+    //    {
+    //        Debug.LogError("Cannot find Node: " + nodeID);
+    //        return;
+    //    }
 
-        ShowCurrentNode();
+    //    if (dialogueUI != null)
+    //        dialogueUI.ShowPanel();
+
+    //    ShowCurrentNode();
+    //}
+
+    private void RecordCurrentDialogue()
+    {
+        if (historyManager == null)
+            return;
+
+        string speakerText = GetLocalizedText(
+            currentNode.speakerKey,
+            currentNode.speaker
+        );
+
+        string dialogueText = GetLocalizedText(
+            currentNode.textKey,
+            currentNode.text
+        );
+
+        historyManager.AddDialogue(
+            speakerText,
+            dialogueText
+        );
+    }
+
+    public void EndDialogue()
+    {
+        currentNode = null;
+        availableChoiceCount = 0;
+
+        ClearChoices();
+
+        if (dialogueUI != null)
+        {
+            dialogueUI.HideChoices();
+            dialogueUI.HidePanel();
+        }
     }
 
     //void ShowCurrentNode()
@@ -86,6 +142,25 @@ public class DialogueManager : MonoBehaviour
     //    );
     //}
 
+
+    public void StartDialogue(string nodeID)
+    {
+        if (!nodeDictionary.TryGetValue(nodeID, out currentNode))
+        {
+            Debug.LogError("找不到 Node: " + nodeID);
+            return;
+        }
+
+        if (dialogueUI != null)
+        {
+            dialogueUI.ShowPanel();
+        }
+
+        // 记录当前节点的对话
+        RecordCurrentDialogue();
+
+        ShowCurrentNode();
+    }
 
 
     void ShowCurrentNode()
@@ -105,10 +180,10 @@ public class DialogueManager : MonoBehaviour
         );
 
         // 显示对话
-        dialogueUI.ShowDialogue(
-            speakerText,
-            dialogueText
-        );
+        dialogueUI.UpdateDialogueContent(
+     speakerText,
+     dialogueText
+ );
 
         // 清除旧的 Choice UI
         ClearChoices();
@@ -368,6 +443,24 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        // 记录玩家实际选择的选项
+        if (historyManager != null)
+        {
+            string choiceText = GetLocalizedText(
+                selectedChoice.textKey,
+                selectedChoice.text
+            );
+
+            string playerSpeaker = GetLocalizedText(
+                playerChoiceSpeakerKey,
+                playerChoiceSpeaker
+            );
+
+            historyManager.AddPlayerChoice(
+                playerSpeaker,
+                choiceText
+            );
+        }
         // 执行当前选项的 Effect
         ApplyEffects(selectedChoice);
 
