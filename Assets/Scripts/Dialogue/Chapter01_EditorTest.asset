@@ -14,25 +14,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - id: room_001
-    nextNodeID: node_002
+    nextNodeID: Node_B
     speaker: '?'
+    speakerKey: 
     text: 1
+    textKey: 
     choices:
-    - id: choice_001
-      text: 
-      targetNodeID: 
-      effects: []
+    - id: Choice_1
+      text: Continue
+      textKey: 
+      targetNodeID: Node_B
+      effects:
+      - type: 0
+        key: Door_Opened
+        value: 1
+        boolValue: 0
       conditions: []
-    editorPosition: {x: -829, y: -1140}
-  - id: node_002
+    - id: Choice_2
+      text: 
+      textKey: 
+      targetNodeID: Node_C
+      effects:
+      - type: 0
+        key: Door_Opened
+        value: 0
+        boolValue: 0
+      conditions:
+      - type: 0
+        key: Has_Key
+        value: 0
+    editorPosition: {x: -913, y: -1140}
+  - id: Node_B
     nextNodeID: node_003
-    speaker: '?'
-    text: 2!
+    speaker: Old Speaker
+    speakerKey: 
+    text: This is an old dialogue.
+    textKey: 
     choices: []
     editorPosition: {x: -657, y: -1140}
-  - id: node_003
+  - id: Node_C
     nextNodeID: 
     speaker: '?'
+    speakerKey: 
     text: 3!
+    textKey: 
     choices: []
-    editorPosition: {x: -462, y: -1140}
+    editorPosition: {x: -657, y: -848}

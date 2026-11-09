@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LocalizationManager : MonoBehaviour
 {
@@ -100,6 +101,16 @@ public class LocalizationManager : MonoBehaviour
 
         Debug.Log("语言已切换为：" + CurrentLanguage);
     }
+
+    //private void Update()
+    //{
+    //    // 按 F4 显示当前语言
+    //    if (Input.GetKeyDown(KeyCode.F4))
+    //    {
+    //        Debug.Log("语言为：" + CurrentLanguage);
+    //    }
+    //}
+
 
     public string GetText(string key)
     {
